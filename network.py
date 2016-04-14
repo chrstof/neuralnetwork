@@ -85,8 +85,8 @@ class Network(object):
         """
 
         #initialize nabla bias and nabla wieghts for all:
-        nabla_b = [np.zero(b.shape) for b in self.biases]
-        nabla_w = [np.zero(w.shape) for w in self.weights]
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
 
         for x,y in mini_batch:
             # using backpropagation to compute delta nabla
@@ -98,7 +98,7 @@ class Network(object):
 
         # update the weights and biases: new weights = old weights - eta*nabla weight / n
         self.weights = [w - (eta/len(mini_batch))*nw for w,nw in zip(self.weights,nabla_w)]
-        self.biases  = [b - (eta/len(mini_batch))*nb for b,nb in zip(self.weights,nabla_b)]
+        self.biases  = [b - (eta/len(mini_batch))*nb for b,nb in zip(self.biases,nabla_b)]
 
     def backprop(self,x,y):
         """
