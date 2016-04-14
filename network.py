@@ -43,6 +43,62 @@ class Network(object):
 
         return a
 
+    def SGD(self,training_data,epochs,mini_batch_size,eta,test_data=None):
+        """
+
+        :param training_data:       list of tuples (x,y) with x - training input data and y - output
+        :param epochs:              training epochs
+        :param mini_batch_size:     size of the training batch
+        :param eta:                 learning rate
+        :param test_data:           network will be tested against this data after n epochs
+        :return:
+        """
+        if test_data:
+            n_test = len(test_data)
+
+        n = len(training_data)
+
+        for j in range(epochs):
+            random.shuffle(training_data)
+
+            # devide the trainingdata into equal sized mini_batches
+            mini_batches = [training_data[k:k+mini_batch_size] for k in range(0,n,mini_batch_size)]
+            for mini_batch in mini_batches:
+
+
+    def update_mini_batch(self,mini_batch,eta):
+        """
+
+        :param mini_batch:
+        :param eta:
+        :return:
+        """
+
+    def backprop(self,x,y):
+        """
+
+        :param x:
+        :param y:
+        :return:
+        """
+
+    def evaluate(self,test_data):
+        """
+
+        :param test_data:
+        :return:
+        """
+
+    def cost_derivative(self,output_activations,y):
+        """
+
+        :param output_activations:
+        :param y:
+        :return:
+        """
+
+
+
 
 
 
