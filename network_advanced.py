@@ -103,5 +103,67 @@ class Network(object):
 
 
 
+    def SGD(self,training_data,epochs,mini_batch_size,eta,
+            lmbda = 0.0,
+            evaluation_data = None,
+            monitoring_evaluation_cost = False,
+            monitoring_evaluation_accuracy = False,
+            monitoring_training_cost = False,
+            monitoring_training_accuracy = False):
+        """
+
+        :param training_data:       list of tuples (x,y) with x - training input data and y - output
+        :param epochs:              training epochs
+        :param mini_batch_size:     size of the training batch
+        :param eta:                 learning rate
+        :param test_data:           network will be tested against this data after n epochs
+        :return:
+        """
+        if evaluation_data:n_data = len(evaluation_data)
+
+        n = len(training_data)
+        evaluation_cost, evaluation_accuracy = [],[]
+        training_cost, training_accuracy = [],[]
+
+
+        for j in range(epochs):
+            random.shuffle(training_data)
+
+            # devide the trainingdata into equal sized mini_batches
+            mini_batches = [training_data[k:k+mini_batch_size] for k in range(0,n,mini_batch_size)]
+
+            # update mini batch for all mini batches
+            for mini_batch in mini_batches:
+                self.update_mini_batch(mini_batch,eta)
+
+            print("Epoch %s training complete" % j)
+
+            if monitoring_training_cost:
+                cost = self.total_cost(training_data,lmbda)
+
+            # Output testing results
+            if test_data:
+                print("Epoch {0}: {1}/{2}".format(j,self.evaluate(test_data), n_test))
+            else:
+                print("Epoch {0}/{1}".format(j,n_test))
+
+
+    def total_cost(self,data,lmbda,convert=False):
+        """
+        Returns the total cost for the data set "data"
+        :param data:
+        :param lmbda:
+        :param convert:     False for training data and true for testing and validation data
+        :return:
+        """
+
+        cost = 0.0
+        for x,y in data:
+            a = self.feedforward(x)
+            if convert: y = vectorized_result(y)
+            cost += self.cost.fn(a,y)/len(data)
+        cost += 0.5 *(lmbda/len(data))*sum(np.linalg.norm(w)**2 for w in self.weights)
+
+        return cost
 
 
